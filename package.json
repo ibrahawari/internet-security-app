@@ -1,0 +1,25 @@
+{
+  "name": "io.internetsecurityapp",
+  "version": "0.0.1",
+  "displayName": "Sad Cyber Sam",
+  "cordova": {
+    "platforms": [
+      "ios",
+      "browser"
+    ],
+    "plugins": {
+      "cordova-plugin-console": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-media": {},
+      "cordova-plugin-nativeaudio": {},
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-wkwebview-engine": {}
+    }
+  },
+  "dependencies": {
+    "cordova-ios": "~4.5.2",
+    "cordova-browser": "~5.0.0"
+  }
+}

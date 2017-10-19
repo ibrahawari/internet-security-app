@@ -4,8 +4,7 @@
   "displayName": "Sad Cyber Sam",
   "cordova": {
     "platforms": [
-      "ios",
-      "browser"
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-console": {},
@@ -19,7 +18,6 @@
     }
   },
   "dependencies": {
-    "cordova-ios": "~4.5.2",
-    "cordova-browser": "~5.0.0"
+    "cordova-ios": "~4.5.2"
   }
 }

@@ -30,7 +30,6 @@
         <preference name="Fullscreen" value="true" />
     </platform>
     <engine name="ios" spec="~4.5.2" />
-    <engine name="browser" spec="~5.0.0" />
     <plugin name="cordova-plugin-console" />
     <plugin name="cordova-plugin-file" />
     <plugin name="cordova-plugin-file-transfer" />

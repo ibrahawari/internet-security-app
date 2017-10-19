@@ -1,6 +1,11 @@
 # Building Sad Cyber Sam
 
-Sad Cyber Sam is a cordova built application. Install Cordova [HERE][df1] and build follow documentation to build for the appropriate platform
+iOS:
+
+```
+$ npm install -g cordova
+$ cordova platform add ios
+```
 
 # Future Development
 

@@ -1,9 +1,14 @@
 # Building Sad Cyber Sam
 
-iOS:
+Install Cordova:
 
 ```
 $ npm install -g cordova
+```
+
+Build for iOS:
+
+```
 $ cordova platform add ios
 ```
 

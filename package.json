@@ -4,7 +4,7 @@
   "displayName": "Sad Cyber Sam",
   "cordova": {
     "platforms": [
-      "ios"
+      "android"
     ],
     "plugins": {
       "cordova-plugin-console": {},
@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
-    "cordova-ios": "~4.5.2"
+    "cordova-android": "^6.3.0",
+    "es6-promise-plugin": "git+https://github.com/vstirbu/PromisesPlugin.git"
   }
 }

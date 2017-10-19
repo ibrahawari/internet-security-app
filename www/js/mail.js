@@ -273,7 +273,7 @@ function scoreUp(){
     playMedia("assets/audio/hit.mp3");
 }
 function closeMail(choice){
-	results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id});
+	results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score});
     switch (choice){
         case 0: //accept
             if (openMail.type >= 0 && openMail.type <= 3){ //good mails

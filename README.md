@@ -7,6 +7,8 @@ $ npm install -g cordova
 $ cordova platform add ios
 ```
 
+This will create ```/node_modules```, ```/platforms```, and ```/plugins```. Open ```/platforms/ios/Sad Cyber Sam.xcodeproj``` in Xcode to play.
+
 # Future Development
 
 The following is a descrption of each html file. All the files has a css and a js file associated with it of the same name.

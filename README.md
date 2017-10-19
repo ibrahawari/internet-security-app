@@ -47,7 +47,7 @@ render
 
 After each game ends it will bring up an ending popup. Hitting Play again will reset all parameters and start the game over. Hitting Main Menu will captured data to the database the go back to main.html
 
-#Known Bugs
+# Known Bugs
 
 * Very rarely the app will crash with a BAD_READ_EXCEPTION. This may just be a Cordova issue.
 

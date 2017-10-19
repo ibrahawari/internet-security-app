@@ -29,6 +29,7 @@ bgImage.src = 'assets/img/emailBG.png';
 var baseSpeed = 4500;
 var delta = window.innerHeight / baseSpeed;
 var mailOpen = false;
+var correct_answer;
 var score = 0;
 var game_id = 1;
 var spamBase = 0;
@@ -265,15 +266,18 @@ function playMedia(src) {
 }
 
 function scoreDown(){
+    correct_answer = 0;
     score = score - 200;
     playMedia("assets/audio/miss.mp3");
 }
 function scoreUp(){
+    correct_answer = 1;
     score = score + 100;
     playMedia("assets/audio/hit.mp3");
 }
 function closeMail(choice){
-	results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score});
+    // Default correct_answer is -1 or NULL
+    correct_answer = -1;
     switch (choice){
         case 0: //accept
             if (openMail.type >= 0 && openMail.type <= 3){ //good mails
@@ -310,6 +314,7 @@ function closeMail(choice){
                 return;
             }
             if (openMail.type == 6){ //bad mail Virus
+                correct_answer = 0;
                 var virusSprite = new sprite({
                                             context: canvas.getContext("2d"),
                                             image: acceptVirusImage,
@@ -417,6 +422,7 @@ function closeMail(choice){
             
             break;
     }
+    results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score,"correct_answer":correct_answer});    
     openMail.delay = 400;
     //destroy mail
     var popup = document.getElementsByClassName("popup")[0];

@@ -264,7 +264,15 @@ function playMedia(src) {
     mediaRes.play();
     
 }
-
+function scoreDownLite(){
+    correct_answer=0;
+    score = score - 50;
+    playMedia("assets/audio/miss.mp3");    
+}
+function scoreKill(){
+    correct_answer = 0;
+    score = score - 500;
+}
 function scoreDown(){
     correct_answer = 0;
     score = score - 200;
@@ -314,7 +322,7 @@ function closeMail(choice){
                 return;
             }
             if (openMail.type == 6){ //bad mail Virus
-                correct_answer = 0;
+                scoreKill();
                 var virusSprite = new sprite({
                                             context: canvas.getContext("2d"),
                                             image: acceptVirusImage,
@@ -371,6 +379,7 @@ function closeMail(choice){
 			}
             if (openMail.type == 7){ //spam mail
                 // Technically correct, but no points awarded
+                changeSpam(-1);
                 playMedia("assets/audio/hit.mp3");
                 openMail.img = explosionImage;
             }
@@ -396,14 +405,18 @@ function closeMail(choice){
                 changeSpam(-1);
                 openMail.img = rejectAccountImage;
             }
-            if (openMail.type >= 4 && openMail.type <= 6){ //bad mail
+            if (openMail.type >= 4 && openMail.type <= 5){ //bad mail
                 // Technically a correct choice, but no points awarded
-                playMedia("assets/audio/hit.mp3");
+                scoreDownLite();
+                openMail.img = explosionImage;
+            }
+            if (openMail.type == 6){
+                scoreDown();
                 openMail.img = explosionImage;
             }
             if (openMail.type == 7){ //spam mail
                 scoreUp();
-                changeSpam(1);
+                changeSpam(2);
 				
                 var spamUpSprite = new sprite({
                                             context: canvas.getContext("2d"),
@@ -422,7 +435,7 @@ function closeMail(choice){
             
             break;
     }
-    results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score,"correct_answer":correct_answer});    
+    results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score,"correct_answer":correct_answer,"spam_score":spamBase});    
     openMail.delay = 400;
     //destroy mail
     var popup = document.getElementsByClassName("popup")[0];

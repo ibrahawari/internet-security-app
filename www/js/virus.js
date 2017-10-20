@@ -17,6 +17,10 @@ var score_arr = [];
 var score_arr2 = [];
 var virusEscapeTimer = null;
 
+// New additions
+var results_arr2 = [];
+var game_id = 1;
+
 
 
 var app = {
@@ -599,6 +603,14 @@ function antiVirusPopup() {
 
 }
 function closeAntiVirusPopup(){
+	results_arr2.push({
+		"game_id": game_id,
+		"antivirus_update_id": ,
+		"antivirus_counter": ,
+		"data_chips": ,
+		"viruses_missed": ,
+		"score":
+	});	
 	var popup = document.getElementsByClassName("popup")[0];
 	popup.remove();
 	av_open = false;
@@ -703,7 +715,18 @@ function endingPopup(){
 	mainMenu.addEventListener('touchend', function(event){
 							event.preventDefault();
 							event.stopPropagation();
-							window.location.href = 'main.html'
+							// Add HTTP Request
+							if (!disableClick) {
+								disableClick = true;
+								var xhttp = new XMLHttpRequest();
+								xhttp.onreadystatechange = function () {
+									if (xhttp.readyState == 4 && xhttp.status == 200) {
+										window.location.href = 'main.html'
+									}
+								};
+								xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								xhttp.send();
+							}
 							return true;
 							});
 	popup.appendChild(missedContainer);
@@ -718,6 +741,7 @@ var oldPopup = document.getElementsByClassName("finalPopup")[0]
 		document.body.removeChild(oldPopup);
 		document.body.removeChild(oldDimmer);
 		}
+	game_id = game_id + 1;
 	virus_arr = [];
 	score_arr = [];
 	score_arr2 = [];

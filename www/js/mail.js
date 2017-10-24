@@ -742,6 +742,13 @@ function endingPopup(){
     next.addEventListener('touchend', function(event){
                           event.preventDefault();
                           event.stopPropagation();
+                          // copied from whack.js
+                          if (!disableClick) {
+                            disableClick = true;
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+                            xhttp.send();
+                        }
                           restartGame();
                           return true;
                           
@@ -783,6 +790,8 @@ function endingPopup(){
 // Resets all of the variables in the game in preparation for a new start
 // Removes any popups
 function restartGame(){
+    disableClick = false;															    
+    console.log(disableClick);    
     var oldPopup = document.getElementsByClassName("finalPopup")[0]
     var oldDimmer = document.getElementsByClassName("dimmer")[0]
     if(oldPopup){
@@ -795,9 +804,9 @@ function restartGame(){
     }
     spriteArr = [];
     mailCounter = 0;
-	game_id = game_id +1;
     secondsPerMail = 4;
-	results_arr = [];
+    results_arr = [];
+    results_arr2 = [];
     time = (secondsPerMail - 1) * 1000;
     if (mailOpen){
         var popup = document.getElementsByClassName("popup")[0];

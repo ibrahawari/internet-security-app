@@ -274,9 +274,15 @@ function endingPopup(number){
 	next.addEventListener('touchend', function(event){
 							event.preventDefault();
 							event.stopPropagation();
+							// shitty attempt numero uno
+							if (!disableClick) {
+								disableClick = true;
+								var xhttp = new XMLHttpRequest();
+								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								xhttp.send();
+							}
 							restartGame();
 							return true;
-
 							});
 	var mainMenu = document.createElement("button");
 	mainMenu.innerHTML = "Main Menu"
@@ -286,7 +292,7 @@ function endingPopup(number){
 							event.stopPropagation();
 							
 							if (!disableClick){
-							disableClick=true;
+								disableClick=true;
 								var xhttp = new XMLHttpRequest();
 								
 								xhttp.onreadystatechange = function() {
@@ -300,8 +306,8 @@ function endingPopup(number){
 								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 								
 								xhttp.send();
-
 							}
+							return true;
 							});
 	popup.appendChild(missedContainer)
 	popup.appendChild(next)
@@ -312,18 +318,20 @@ function endingPopup(number){
 // Resets all of the variables in the game in preparation for a new start
 // Removes any popups
 function restartGame(){
+	disableClick = false;
+	console.log(disableClick);
 	var oldPopup = document.getElementsByClassName("finalPopup")[0]
 	var oldDimmer = document.getElementsByClassName("dimmer")[0]
 	if(oldPopup){
 		document.body.removeChild(oldPopup);
 		document.body.removeChild(oldDimmer);
 		}
-	game_id = game_id +1;
 	timer = 30000;
 	score = 0;
 	for(j=0;j<6;j++)
 		moleArr[j].mole = null
 	results_arr = [];
+	results_arr2 = [];
 	
 	stopGame = false;
 	lastTime = Date.now()

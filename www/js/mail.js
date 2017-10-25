@@ -736,26 +736,26 @@ function endingPopup(){
     missed.className = "finalScore";
     missed.innerHTML = "Final Score: " + score;
     missedContainer.appendChild(missed)
-    var next = document.createElement("button");
-    next.innerHTML = "Play Again"
-    next.className = "restart";
-    next.addEventListener('touchend', function(event){
-                          event.preventDefault();
-                          event.stopPropagation();
-                          // copied from whack.js
-                          if (!disableClick) {
-                            disableClick = true;
-                            var xhttp = new XMLHttpRequest();
-                            xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
-                            xhttp.send();
-                        }
-                          restartGame();
-                          return true;
+    // var next = document.createElement("button");
+    // next.innerHTML = "Play Again"
+    // next.className = "restart";
+    // next.addEventListener('touchend', function(event){
+    //                       event.preventDefault();
+    //                       event.stopPropagation();
+    //                       // copied from whack.js
+    //                       if (!disableClick) {
+    //                         disableClick = true;
+    //                         var xhttp = new XMLHttpRequest();
+    //                         xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+    //                         xhttp.send();
+    //                     }
+    //                       restartGame();
+    //                       return true;
                           
-                          });
+    //                       });
     var mainMenu = document.createElement("button");
     mainMenu.innerHTML = "Main Menu"
-    mainMenu.className = "mainMenu";
+    mainMenu.className = "nextButton";
     mainMenu.addEventListener('touchend', function(event){
                               event.preventDefault();
                               event.stopPropagation();
@@ -782,7 +782,7 @@ function endingPopup(){
                               return true;
                               });
     popup.appendChild(missedContainer)
-    popup.appendChild(next)
+    // popup.appendChild(next)
     popup.appendChild(mainMenu);
     document.body.appendChild(popup)
 }

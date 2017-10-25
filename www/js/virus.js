@@ -125,6 +125,7 @@ for(i = 0; i < 6; i ++){
 }
 
 var pid;
+var userData;
 // copied from mail.js w/ canvas stuff gutted, we just want the PID
 // this function really should be cleaned up by someone but for the sake of time we wont
 function loadEverything() {
@@ -137,6 +138,7 @@ function loadEverything() {
 				reader.onload = function (e) {
 					filedata = this.result;
 					filedata = JSON.parse(filedata);
+					userData = filedata;
 					pid = filedata.PID;
 				};
 				reader.readAsText(file);
@@ -761,7 +763,15 @@ function endingPopup(){
 										window.location.href = 'main.html'
 									}
 								};
-								xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 								xhttp.send();
 							}
 							return true;

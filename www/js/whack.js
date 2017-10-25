@@ -52,6 +52,7 @@ var miss_sound_index = 0;
 var hit_sound2;
 var miss_sound2;
 var disableClick = false;
+var userData;
  // Load passwords from file
 function loadEverything(){
 	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
@@ -72,7 +73,8 @@ function loadEverything(){
                                             
                                             filedata=this.result;
                                                      console.log(filedata);
-                                                     filedata = JSON.parse(filedata);
+													 filedata = JSON.parse(filedata);
+													 userData = filedata;
                                                      console.log(filedata);
                                             pid = filedata.PID;
                                                      
@@ -302,8 +304,15 @@ function endingPopup(number){
 									
 								}
 								};
-							
-								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 								
 								xhttp.send();
 							}
@@ -493,6 +502,7 @@ function editObjects(dt){
 			
 			if(moleArr[i].mole.delay <= 0){
 				moleArr[i].mole = null;
+				// come back to this
                 if (i == start.attachedTo) {
                     start = null;
                 }

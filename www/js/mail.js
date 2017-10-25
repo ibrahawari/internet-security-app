@@ -35,6 +35,7 @@ var game_id = 1;
 var spamBase = 0;
 var update_file;
 var pid;
+var userData;
 var spamFilter = 0;
 var stop_game = false;
 var results_arr = [];
@@ -87,7 +88,7 @@ window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
                                             
                                             filedata=this.result;
                                                      filedata = JSON.parse(filedata);
-                                                     
+                                            userData = filedata;         
                                             pid = filedata.PID;
                                                      canvas.addEventListener("touchstart",touchStart);
 													 document.getElementsByClassName('back')[0].style.display = "block";
@@ -773,8 +774,15 @@ function endingPopup(){
 								}
 								};
 							
-								xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
-								
+                                console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);								
 								xhttp.send();
 
 							}

@@ -117,12 +117,21 @@ function checkForUpdates(){
                                          }
 						
 					} else { //If we need a new PID
-						
 						var PID = ""
 						while (PID.length < 5){
 							PID = prompt("Please enter your PID");
 						}
-						fileWriter.write('{"PID":"'+PID+'","updated":"'+Date.now()+'"}');
+						var data = {
+							PID: PID,
+							program: programDialog(),
+							classyear: classyearDialog(),
+							gender: genderDialog(),
+							age: ageDialog(),
+							english: englishDialog(),
+							updated: Date.now()
+						}
+						console.log(data)
+						fileWriter.write(JSON.stringify(data));
 						body.innerHTML= "Downloading..."
 						writeMailQuestionsToFile()
 						writeWhackQuestionsToFile()
@@ -141,6 +150,130 @@ function checkForUpdates(){
 }
 var whack_done = false
 var mail_done = false
+
+function makeButton(text) {
+	var button = document.createElement('button');
+	button.innerHTML = text;
+	button.className = 'nextButton';
+	return button;
+}
+
+function programDialog() {
+	// var program = '';
+
+	// var dialog = document.createElement('div');
+	// dialog.className = 'dialog';
+
+	// var buttons = ['BSBA', 'MAC', 'MBA']
+	// buttons.forEach(x => {
+	// 	var button = makeButton(x);
+	// 	button.addEventListener('touchend', () => {
+	// 		program = x;
+	// 		popup.removeChild(dialog);			
+	// 	});
+	// 	dialog.appendChild(button);
+	// });
+
+	// document.body.appendChild(dialog);	
+
+	// return program
+	var program = '';
+	while (program !== 'BSBA' && program !== 'MBA' && program !== 'MAC') {
+		program = prompt("Your Program (BSBA or MBA or MAC)")
+	}
+	return program
+}
+
+function classyearDialog() {
+	var classyear = '';
+	while (classyear.length < 4) {
+		classyear = prompt("Your Class Year");
+	}
+	return parseInt(classyear)
+}
+
+function genderDialog() {
+	// var gender = '';
+
+	// var dialog = document.createElement('div');
+	// dialog.className = 'dialog';
+
+	// var buttons = ['M', 'F']
+	// buttons.forEach(x => {
+	// 	var button = makeButton(x);
+	// 	button.addEventListener('touchend', () => {
+	// 		gender = x;
+	// 		document.body.removeChild(dialog);			
+	// 	});
+	// 	dialog.appendChild(button);
+	// });
+
+	// document.body.appendChild(dialog);	
+
+	// return gender
+	var gender = '';
+	while (gender !== 'M' && gender !== 'F') {
+		gender = prompt("Your Gender (F or M)");
+	}
+	return gender;
+}
+
+function ageDialog() {
+	// var age = 0;
+
+	// var dialog = document.createElement('div');
+	// dialog.className = 'dialog';
+
+	// var buttons = ['<18', '18-22', '>22']
+	// buttons.forEach(x => {
+	// 	var button = makeButton(x);
+	// 	button.addEventListener('touchend', () => {
+	// 		if (x === '<18')
+	// 			age = 1;
+	// 		else if (x === '18-22')
+	// 			age = 2;
+	// 		else if (x === '>22')
+	// 			age = 3;
+	// 		document.body.removeChild(dialog);
+	// 	});
+	// 	dialog.appendChild(button);
+	// });
+
+	// document.body.appendChild(dialog);		
+
+	// return age;
+	var age = 0;
+	while (age !== 1 && age !== 2 && age !== 3) {
+		age = parseInt(prompt("Enter age group as: 1 (if <18), 2 (if 18-22), 3 (if >22)"))
+	}
+	return age;
+}
+
+function englishDialog() {
+	// var english = '';
+	
+	// var dialog = document.createElement('div');
+	// dialog.className = 'dialog';
+
+	// var buttons = ['Y', 'N']
+	// buttons.forEach(x => {
+	// 	var button = makeButton(x);
+	// 	button.addEventListener('touchend', () => {
+	// 		english = x;
+	// 		document.body.removeChild(dialog);			
+	// 	});
+	// 	dialog.appendChild(button);
+	// });
+
+	// document.body.appendChild(dialog);	
+
+	// return english
+	var english = '';
+	while (english !== 'Y' && english !== 'N') {
+		english = prompt("Native English speaker? (Y or N)");
+	}
+	return english;
+}
 
 
 function writeWhackQuestionsToFile(){

@@ -29,11 +29,13 @@ bgImage.src = 'assets/img/emailBG.png';
 var baseSpeed = 4500;
 var delta = window.innerHeight / baseSpeed;
 var mailOpen = false;
+var correct_answer;
 var score = 0;
 var game_id = 1;
 var spamBase = 0;
 var update_file;
 var pid;
+var userData;
 var spamFilter = 0;
 var stop_game = false;
 var results_arr = [];
@@ -86,7 +88,7 @@ window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
                                             
                                             filedata=this.result;
                                                      filedata = JSON.parse(filedata);
-                                                     
+                                            userData = filedata;         
                                             pid = filedata.PID;
                                                      canvas.addEventListener("touchstart",touchStart);
 													 document.getElementsByClassName('back')[0].style.display = "block";
@@ -263,17 +265,28 @@ function playMedia(src) {
     mediaRes.play();
     
 }
-
+function scoreDownLite(){
+    correct_answer=0;
+    score = score - 50;
+    playMedia("assets/audio/miss.mp3");    
+}
+function scoreKill(){
+    correct_answer = 0;
+    score = score - 500;
+}
 function scoreDown(){
+    correct_answer = 0;
     score = score - 200;
     playMedia("assets/audio/miss.mp3");
 }
 function scoreUp(){
+    correct_answer = 1;
     score = score + 100;
     playMedia("assets/audio/hit.mp3");
 }
 function closeMail(choice){
-	results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id});
+    // Default correct_answer is -1 or NULL
+    correct_answer = -1;
     switch (choice){
         case 0: //accept
             if (openMail.type >= 0 && openMail.type <= 3){ //good mails
@@ -310,6 +323,7 @@ function closeMail(choice){
                 return;
             }
             if (openMail.type == 6){ //bad mail Virus
+                scoreKill();
                 var virusSprite = new sprite({
                                             context: canvas.getContext("2d"),
                                             image: acceptVirusImage,
@@ -366,6 +380,7 @@ function closeMail(choice){
 			}
             if (openMail.type == 7){ //spam mail
                 // Technically correct, but no points awarded
+                changeSpam(-1);
                 playMedia("assets/audio/hit.mp3");
                 openMail.img = explosionImage;
             }
@@ -391,14 +406,18 @@ function closeMail(choice){
                 changeSpam(-1);
                 openMail.img = rejectAccountImage;
             }
-            if (openMail.type >= 4 && openMail.type <= 6){ //bad mail
+            if (openMail.type >= 4 && openMail.type <= 5){ //bad mail
                 // Technically a correct choice, but no points awarded
-                playMedia("assets/audio/hit.mp3");
+                scoreDownLite();
+                openMail.img = explosionImage;
+            }
+            if (openMail.type == 6){
+                scoreDown();
                 openMail.img = explosionImage;
             }
             if (openMail.type == 7){ //spam mail
                 scoreUp();
-                changeSpam(1);
+                changeSpam(2);
 				
                 var spamUpSprite = new sprite({
                                             context: canvas.getContext("2d"),
@@ -417,6 +436,7 @@ function closeMail(choice){
             
             break;
     }
+    results_arr2.push({"id":openMail.id,"selected":choice,"game_id":game_id,"score":score,"correct_answer":correct_answer,"spam_score":spamBase});    
     openMail.delay = 400;
     //destroy mail
     var popup = document.getElementsByClassName("popup")[0];
@@ -717,19 +737,26 @@ function endingPopup(){
     missed.className = "finalScore";
     missed.innerHTML = "Final Score: " + score;
     missedContainer.appendChild(missed)
-    var next = document.createElement("button");
-    next.innerHTML = "Play Again"
-    next.className = "restart";
-    next.addEventListener('touchend', function(event){
-                          event.preventDefault();
-                          event.stopPropagation();
-                          restartGame();
-                          return true;
+    // var next = document.createElement("button");
+    // next.innerHTML = "Play Again"
+    // next.className = "restart";
+    // next.addEventListener('touchend', function(event){
+    //                       event.preventDefault();
+    //                       event.stopPropagation();
+    //                       // copied from whack.js
+    //                       if (!disableClick) {
+    //                         disableClick = true;
+    //                         var xhttp = new XMLHttpRequest();
+    //                         xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+    //                         xhttp.send();
+    //                     }
+    //                       restartGame();
+    //                       return true;
                           
-                          });
+    //                       });
     var mainMenu = document.createElement("button");
     mainMenu.innerHTML = "Main Menu"
-    mainMenu.className = "mainMenu";
+    mainMenu.className = "nextButton";
     mainMenu.addEventListener('touchend', function(event){
                               event.preventDefault();
                               event.stopPropagation();
@@ -747,8 +774,15 @@ function endingPopup(){
 								}
 								};
 							
-								xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
-								
+                                console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);								
 								xhttp.send();
 
 							}
@@ -756,7 +790,7 @@ function endingPopup(){
                               return true;
                               });
     popup.appendChild(missedContainer)
-    popup.appendChild(next)
+    // popup.appendChild(next)
     popup.appendChild(mainMenu);
     document.body.appendChild(popup)
 }
@@ -764,6 +798,8 @@ function endingPopup(){
 // Resets all of the variables in the game in preparation for a new start
 // Removes any popups
 function restartGame(){
+    disableClick = false;															    
+    console.log(disableClick);    
     var oldPopup = document.getElementsByClassName("finalPopup")[0]
     var oldDimmer = document.getElementsByClassName("dimmer")[0]
     if(oldPopup){
@@ -776,9 +812,9 @@ function restartGame(){
     }
     spriteArr = [];
     mailCounter = 0;
-	game_id = game_id +1;
     secondsPerMail = 4;
-	results_arr = [];
+    results_arr = [];
+    results_arr2 = [];
     time = (secondsPerMail - 1) * 1000;
     if (mailOpen){
         var popup = document.getElementsByClassName("popup")[0];

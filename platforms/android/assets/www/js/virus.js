@@ -17,6 +17,11 @@ var score_arr = [];
 var score_arr2 = [];
 var virusEscapeTimer = null;
 
+// New additions
+var results_arr2 = [];
+var disableClick = false;
+var game_id = 1;
+
 
 
 var app = {
@@ -33,7 +38,8 @@ var app = {
 		
     },
 
-    onDeviceReady: function() {	
+    onDeviceReady: function() {
+		loadEverything();
 		canvas = document.createElement("canvas");
 		ctx = canvas.getContext("2d");
 		//Set up the Canvas and create click functions
@@ -116,6 +122,33 @@ for(i = 0; i < 6; i ++){
 	var av_count_image = new Image();
 	av_count_image.src = 'assets/img/av_count_' + i + '.png';
 	av_arr.push(av_count_image);
+}
+
+var pid;
+var userData;
+// copied from mail.js w/ canvas stuff gutted, we just want the PID
+// this function really should be cleaned up by someone but for the sake of time we wont
+function loadEverything() {
+	console.log(cordova.file.dataDirectory);
+	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+		dir.getFile("info.json", { create: true }, function (file) {
+			update_file = file;
+			update_file.file(function (file) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					filedata = this.result;
+					filedata = JSON.parse(filedata);
+					userData = filedata;
+					pid = filedata.PID;
+				};
+				reader.readAsText(file);
+			}, fail);
+		});
+	});
+}
+
+function fail(err){
+	alert(err)
 }
 
 //Load all sounds for this game, called after the onclick event on the Play button
@@ -390,7 +423,7 @@ function editObjects(dt){
         spriteArr.push(notificationSprite);
 		av_counter++;
 		if (av_counter > maxAV)
-			maxAv = av_counter;
+			maxAV = av_counter;
         notification_sound.play();
 		
 				
@@ -404,14 +437,14 @@ function editObjects(dt){
 	//If you are updating your antivirus
 	if (av_update){
 		av_update_counter = av_update_counter - dt;
-		if (av_update_counter <= 0){		
-			av_counter--;
+		if (av_update_counter <= 0){
+			av_counter--;							
 			if (av_counter > 0){
 				av_update_counter = 1000
 			}
 			else{
 				av_update = false;
-				closeAntiVirusPopup();			
+				closeAntiVirusPopup();		
 			}			
 		} 
 	}
@@ -578,6 +611,7 @@ function virusIndex(id){
 	return -1;
 
 }
+var av_frozen;
 function antiVirusPopup() {
 	var popup = document.createElement("div");
 	popup.className = "popup";
@@ -596,9 +630,19 @@ function antiVirusPopup() {
 	popup.appendChild(img);
 	document.body.appendChild(popup);
 	av_open = true;
-
+	av_frozen = av_counter;
 }
+var antivirus_update_id = 0;
 function closeAntiVirusPopup(){
+	antivirus_update_id++;
+	results_arr2.push({
+		"game_id": game_id,
+		"antivirus_update_id": antivirus_update_id,
+		"antivirus_counter": av_frozen,
+		"data_chips": greenCollected,
+		"viruses_missed": redMissed,
+		"score": (16 * imagesCollected + score)
+	});	
 	var popup = document.getElementsByClassName("popup")[0];
 	popup.remove();
 	av_open = false;
@@ -687,31 +731,59 @@ function endingPopup(){
 	missed.className = "finalScore";
 	missed.innerHTML = "Final Score: " + (16 * imagesCollected + score); 
 		missedContainer.appendChild(missed)
-	var next = document.createElement("button");
-	next.innerHTML = "Play Again"
-	next.className = "restart";
-	next.addEventListener('touchend', function(event){
-							event.preventDefault();
-							event.stopPropagation();
-							restartGame();
-							return true;
+	// var next = document.createElement("button");
+	// next.innerHTML = "Play Again"
+	// next.className = "restart";
+	// next.addEventListener('touchend', function(event){
+	// 						event.preventDefault();
+	// 						event.stopPropagation();
+	// 						// Add HTTP Request
+	// 						if (!disableClick) {
+	// 							disableClick = true;
+	// 							var xhttp = new XMLHttpRequest();
+	// 							xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+	// 							xhttp.send();
+	// 						}
+	// 						restartGame();
+	// 						return true;
 
-							});
+	// 						});
 	var mainMenu = document.createElement("button");
 	mainMenu.innerHTML = "Main Menu"
-	mainMenu.className = "mainMenu";
+	mainMenu.className = "nextButton";
 	mainMenu.addEventListener('touchend', function(event){
 							event.preventDefault();
 							event.stopPropagation();
-							window.location.href = 'main.html'
+							// Add HTTP Request
+							if (!disableClick) {
+								disableClick = true;
+								var xhttp = new XMLHttpRequest();
+								xhttp.onreadystatechange = function () {
+									if (xhttp.readyState == 4 && xhttp.status == 200) {
+										window.location.href = 'main.html'
+									}
+								};
+								console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								xhttp.send();
+							}
 							return true;
 							});
 	popup.appendChild(missedContainer);
-	popup.appendChild(next);
+	// popup.appendChild(next);
 	popup.appendChild(mainMenu);
 	document.body.appendChild(popup)
 }
 function restartGame(){
+disableClick = false;
+console.log(disableClick);	
 var oldPopup = document.getElementsByClassName("finalPopup")[0]
 	var oldDimmer = document.getElementsByClassName("dimmer")[0]
 	if(oldPopup){
@@ -733,7 +805,8 @@ var oldPopup = document.getElementsByClassName("finalPopup")[0]
 	}
 	av_counter = 0;
 	stop_game = false;
-	lastTime = Date.now()
+	lastTime = Date.now();
+	results_arr2 = [];
 	main();
 }
 function getRandomInt(min, max) {

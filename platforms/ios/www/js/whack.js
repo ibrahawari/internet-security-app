@@ -52,6 +52,7 @@ var miss_sound_index = 0;
 var hit_sound2;
 var miss_sound2;
 var disableClick = false;
+var userData;
  // Load passwords from file
 function loadEverything(){
 	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
@@ -72,7 +73,8 @@ function loadEverything(){
                                             
                                             filedata=this.result;
                                                      console.log(filedata);
-                                                     filedata = JSON.parse(filedata);
+													 filedata = JSON.parse(filedata);
+													 userData = filedata;
                                                      console.log(filedata);
                                             pid = filedata.PID;
                                                      
@@ -268,25 +270,31 @@ function endingPopup(number){
 	missed.className = "finalScore";
 	missed.innerHTML = "Final Score: " + score; 
 		missedContainer.appendChild(missed)
-	var next = document.createElement("button");
-	next.innerHTML = "Play Again"
-	next.className = "restart";
-	next.addEventListener('touchend', function(event){
-							event.preventDefault();
-							event.stopPropagation();
-							restartGame();
-							return true;
-
-							});
+	// var next = document.createElement("button");
+	// next.innerHTML = "Play Again"
+	// next.className = "restart";
+	// next.addEventListener('touchend', function(event){
+	// 						event.preventDefault();
+	// 						event.stopPropagation();
+	// 						// shitty attempt numero uno
+	// 						if (!disableClick) {
+	// 							disableClick = true;
+	// 							var xhttp = new XMLHttpRequest();
+	// 							xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+	// 							xhttp.send();
+	// 						}
+	// 						restartGame();
+	// 						return true;
+	// 						});
 	var mainMenu = document.createElement("button");
 	mainMenu.innerHTML = "Main Menu"
-	mainMenu.className = "mainMenu";
+	mainMenu.className = "nextButton";
 	mainMenu.addEventListener('touchend', function(event){
 							event.preventDefault();
 							event.stopPropagation();
 							
 							if (!disableClick){
-							disableClick=true;
+								disableClick=true;
 								var xhttp = new XMLHttpRequest();
 								
 								xhttp.onreadystatechange = function() {
@@ -296,15 +304,22 @@ function endingPopup(number){
 									
 								}
 								};
-							
-								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php?pid=" + pid + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+								console.log(userData);
+								xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
+								 + "?pid=" + userData.PID
+								 + "&program=" + userData.program
+								 + "&classyear=" + userData.classyear
+								 + "&gender=" + userData.gender
+								 + "&age=" + userData.age
+								 + "&english=" + userData.english
+								 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 								
 								xhttp.send();
-
 							}
+							return true;
 							});
 	popup.appendChild(missedContainer)
-	popup.appendChild(next)
+	// popup.appendChild(next)
 	popup.appendChild(mainMenu);
 	document.body.appendChild(popup)
 }
@@ -312,18 +327,20 @@ function endingPopup(number){
 // Resets all of the variables in the game in preparation for a new start
 // Removes any popups
 function restartGame(){
+	disableClick = false;
+	console.log(disableClick);
 	var oldPopup = document.getElementsByClassName("finalPopup")[0]
 	var oldDimmer = document.getElementsByClassName("dimmer")[0]
 	if(oldPopup){
 		document.body.removeChild(oldPopup);
 		document.body.removeChild(oldDimmer);
 		}
-	game_id = game_id +1;
 	timer = 30000;
 	score = 0;
 	for(j=0;j<6;j++)
 		moleArr[j].mole = null
 	results_arr = [];
+	results_arr2 = [];
 	
 	stopGame = false;
 	lastTime = Date.now()
@@ -376,7 +393,7 @@ function touchEnd(e){
 				}
 				if(moleArr[start.attachedTo].mole.targetType == colorSelect){
 					score = score + Math.floor(moleArr[start.attachedTo].mole.delay/1000 + 1)*5
-                   results_arr2.push({"id":moleArr[start.attachedTo].mole.password_id,"selected":colorSelect,"password":moleArr[start.attachedTo].mole.password,"game_id":game_id,"score":score})
+                   results_arr2.push({"id":moleArr[start.attachedTo].mole.password_id,"selected":colorSelect,"password":moleArr[start.attachedTo].mole.password,"game_id":game_id,"score":score,"correct_answer":1})
 					hit_sound_list[hit_sound_index%5].play();
 				hit_sound_index++;
 					moleArr[start.attachedTo].mole.img = hitImage;
@@ -385,7 +402,7 @@ function touchEnd(e){
 				}else{
 					// Record incorrect selections for final screen
                     results_arr.push({"id":moleArr[start.attachedTo].mole.password_id,"selected":colorSelect,"password":moleArr[start.attachedTo].mole.password,"reason":moleArr[start.attachedTo].mole.reason,"game_id":game_id,"score":score})
-                    results_arr2.push({"id":moleArr[start.attachedTo].mole.password_id,"selected":colorSelect,"password":moleArr[start.attachedTo].mole.password,"game_id":game_id,"score":score})
+                    results_arr2.push({"id":moleArr[start.attachedTo].mole.password_id,"selected":colorSelect,"password":moleArr[start.attachedTo].mole.password,"game_id":game_id,"score":score,"correct_answer":0})
                     // Lose time for incorrect moles
 					timer = timer - 2000
                      
@@ -485,6 +502,7 @@ function editObjects(dt){
 			
 			if(moleArr[i].mole.delay <= 0){
 				moleArr[i].mole = null;
+				// come back to this
                 if (i == start.attachedTo) {
                     start = null;
                 }

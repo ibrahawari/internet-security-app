@@ -1,4 +1,4 @@
-This is the android branch of Sad Cyber Sam.
+This is the android branch of Sad Cyber Sam, split directly from master.
 
 # Steps
 

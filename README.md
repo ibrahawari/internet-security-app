@@ -1,4 +1,4 @@
-This is the android branch of Sad Cyber Sam, split directly from master.
+This is the android branch of Sad Cyber Sam, split directly from master. The rationale behind this is that the plugins used here are unchanged from the original app.
 
 # Steps
 

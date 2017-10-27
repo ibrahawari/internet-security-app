@@ -1,1 +1,7 @@
-This is the android branch of Sad Cyber Sam. It uses the plugins unchanged from master in conjunction with the most recent www folder copied from development.
+This is the android branch of Sad Cyber Sam.
+
+# Steps
+
+1. Copy `www` from the `development` branch.
+
+2. `$ cordova build`

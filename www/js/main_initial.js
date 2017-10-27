@@ -211,9 +211,9 @@ function genderDialog() {
 	// document.body.appendChild(dialog);	
 
 	// return gender
-	var gender = '';
-	while (gender !== 'M' && gender !== 'F') {
-		gender = prompt("Your Gender (F or M)");
+	var gender = 'none';
+	while (gender !== 'M' && gender !== 'F' && gender !== '') {
+		gender = prompt("Optional: gender (F or M or leave blank)");
 	}
 	return gender;
 }

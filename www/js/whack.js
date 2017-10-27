@@ -54,57 +54,58 @@ var miss_sound2;
 var disableClick = false;
 var userData;
  // Load passwords from file
-function loadEverything(){
-	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-           
-            dir.getFile("info.json", {create:true}, function(file) {
-                        update_file = file;
-                        dir.getFile("whack_questions.json", {create:true}, function(file) {
-                                    questions_file = file;
-                                    questions_file.file(function(file) {
-                                    var reader = new FileReader();
-                                    reader.onload = function(e) {
-                                    filedata=this.result;
-                                                        
-                                    jsonObject = JSON.parse(filedata)
-                                    update_file.file(function(file) {
-                                        var reader = new FileReader();
-                                        reader.onload = function(e) {
-                                            
-                                            filedata=this.result;
-                                                     console.log(filedata);
-													 filedata = JSON.parse(filedata);
-													 userData = filedata;
-                                                     console.log(filedata);
-                                            pid = filedata.PID;
-                                                     
-                                                     canvas = document.createElement("canvas");
-                                                     ctx = canvas.getContext("2d");
-                                                     canvas.width = window.innerWidth;
-                                                     canvas.height = window.innerHeight;
-                                                     document.body.appendChild(canvas)
-													 loadImages();
-													 document.getElementsByClassName('back')[0].style.display = "block";
-													 document.getElementsByClassName('play')[0].style.display = "block";
-                                                     document.getElementsByClassName('back')[0].onclick = back;
-                                                     document.getElementsByClassName('play')[0].onclick = play;
-                                                     canvas.addEventListener('touchmove', touchMove);
-                                                     canvas.addEventListener("touchstart",touchStart);
-                                                     canvas.addEventListener("touchend",touchEnd);
-                                                     
-                                                     
-                                                     };
-                                    reader.readAsText(file);
-                                    }, fail);
-                                    
+function loadEverything() {
+	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+		console.log(dir)
+		dir.getFile("info.json", { create: true }, function (file) {
+			console.log(file)
+			update_file = file;
+			dir.getFile("whack_questions.json", { create: true }, function (file) {
+				questions_file = file;
+				questions_file.file(function (file) {
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						filedata = this.result;
+						console.log(filedata)
+						jsonObject = JSON.parse(filedata)
+						update_file.file(function (file) {
+							var reader = new FileReader();
+							reader.onload = function (e) {
 
-				};
-				reader.readAsText(file);
-			}, fail);
-					
+								filedata = this.result;
+								console.log(filedata);
+								filedata = JSON.parse(filedata);
+								userData = filedata;
+								console.log(filedata);
+								pid = filedata.PID;
+
+								canvas = document.createElement("canvas");
+								ctx = canvas.getContext("2d");
+								canvas.width = window.innerWidth;
+								canvas.height = window.innerHeight;
+								document.body.appendChild(canvas)
+								loadImages();
+								document.getElementsByClassName('back')[0].style.display = "block";
+								document.getElementsByClassName('play')[0].style.display = "block";
+								document.getElementsByClassName('back')[0].onclick = back;
+								document.getElementsByClassName('play')[0].onclick = play;
+								canvas.addEventListener('touchmove', touchMove);
+								canvas.addEventListener("touchstart", touchStart);
+								canvas.addEventListener("touchend", touchEnd);
+
+
+							};
+							reader.readAsText(file);
+						}, fail);
+
+
+					};
+					reader.readAsText(file);
+				}, fail);
+
 			});
-                        })
-        
+		})
+
 	});
 
 }

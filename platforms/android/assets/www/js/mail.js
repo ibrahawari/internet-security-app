@@ -71,42 +71,45 @@ for(i=0;i<3;i++){
 }
 var spriteArr = [];
 
-function loadEverything(){
-window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-            dir.getFile("info.json", {create:true}, function(file) {
-                        update_file = file;
-			dir.getFile("mail_questions.json", {create:true}, function(file) {
-				questions_file = file;
-				questions_file.file(function(file) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					filedata=this.result;
-                    jsonObject = JSON.parse(filedata);
-					update_file.file(function(file) {
-                                        var reader = new FileReader();
-                                        reader.onload = function(e) {
-                                            
-                                            filedata=this.result;
-                                                     filedata = JSON.parse(filedata);
-                                            userData = filedata;         
-                                            pid = filedata.PID;
-                                                     canvas.addEventListener("touchstart",touchStart);
-													 document.getElementsByClassName('back')[0].style.display = "block";
-													 document.getElementsByClassName('play')[0].style.display = "block";
-                                    document.getElementsByClassName('back')[0].onclick = back;
-									document.getElementsByClassName('play')[0].onclick = play;
-                                                     };
-                                    reader.readAsText(file);
-                                    }, fail);
-                                    
+function loadEverything() {
+    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+        console.log(dir)
+        dir.getFile("info.json", { create: true }, function (file) {
+            console.log(file)
+            update_file = file;
+            dir.getFile("mail_questions.json", { create: true }, function (file) {
+                questions_file = file;
+                questions_file.file(function (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        filedata = this.result;
+                        console.log(filedata);
+                        jsonObject = JSON.parse(filedata);
+                        update_file.file(function (file) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
 
-				};
-				reader.readAsText(file);
-			}, fail);
-			});
-			});
-        
-	});
+                                filedata = this.result;
+                                filedata = JSON.parse(filedata);
+                                userData = filedata;
+                                pid = filedata.PID;
+                                canvas.addEventListener("touchstart", touchStart);
+                                document.getElementsByClassName('back')[0].style.display = "block";
+                                document.getElementsByClassName('play')[0].style.display = "block";
+                                document.getElementsByClassName('back')[0].onclick = back;
+                                document.getElementsByClassName('play')[0].onclick = play;
+                            };
+                            reader.readAsText(file);
+                        }, fail);
+
+
+                    };
+                    reader.readAsText(file);
+                }, fail);
+            });
+        });
+
+    });
 
 }
 function play(){

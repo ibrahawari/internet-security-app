@@ -1,0 +1,313 @@
+
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+html,body{
+    width:100%;
+    height:100%;
+    margin:0px;
+    -webkit-text-size-adjust: none;
+	
+}
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-attachment:fixed;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    
+    width:100%;
+	background: url("../assets/img/passBG.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                                      /* offset horizontal: half of image width and text area width */
+    }
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+.gameOver{
+	text-align: center;
+    font-size: 7vw;
+	background-color:gray;
+	font-weight:bold;
+}
+.missed{
+	font-size:4.5vw;
+	text-align:center;
+	border-bottom:1px solid black;
+
+}
+.reason{
+	font-size:2.5vh;
+	text-align:center;
+
+}
+.restart{
+	
+   width: 47%;
+    position: absolute;
+    left: 2%;
+   bottom:2%;
+    height: 20%;
+    background-color: #3EFF3E;
+    box-shadow: 0px 1px 1px rgba(000,000,000,0.5), inset 1px 2px 0px rgba(255,255,255,0.4);
+    border: 1px solid #965F06;
+    border-radius: 28px;
+    height: 13%;
+    font-size: 3.2vh;
+    margin-bottom: 4%;
+
+}
+.mainMenu{
+	width: 47%;
+    position: absolute;
+    right: 2%;
+   bottom:2%;
+    height: 20%;
+    background-color: #FFBA3A;
+    box-shadow: 0px 1px 1px rgba(000,000,000,0.5), inset 1px 2px 0px rgba(255,255,255,0.4);
+    border: 1px solid #965F06;
+    border-radius: 28px;
+    height: 13%;
+    font-size: 3.2vh;
+    margin-bottom: 4%;
+	
+
+}
+.finalScoreContainer{
+	width:100%;
+	height:65%;
+	display:table;
+	font-size:6vw;
+	text-align:center;
+
+}
+.finalScore{
+	display:table-cell;
+	vertical-align:middle;
+
+}
+.popup {
+    margin: auto;
+    position: absolute;
+    border: 1px solid black;
+    background: white;
+    height: 80%;
+    width: 100%;
+    top: 10%;
+    padding: 10px;
+    z-index: 2;
+    font-size:150%;
+}
+.nextButton{
+width: 70%;
+    position: absolute;
+    left: 15%;
+   bottom:2%;
+    height: 20%;
+    background-color: #FFBA3A;
+    box-shadow: 0px 1px 1px rgba(000,000,000,0.5), inset 1px 2px 0px rgba(255,255,255,0.4);
+    border: 1px solid #965F06;
+    border-radius: 28px;
+    height: 13%;
+    font-size: 3.2vh;
+    margin-bottom: 4%;
+}
+.dimmer{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:black;
+	z-index:5;
+	pointer-events:all;
+	opacity:.5;
+
+}
+.finalPopup{
+z-index:10;
+width:75%;
+color:white;
+background-color:darkgray;
+height:30%;
+margin:auto;
+position:absolute;
+left:12.5%;
+top:35%;
+}
+.mailBody{
+    position: relative;
+    padding-right:5%;
+    padding-left:5%;
+    height:79%;
+    -webkit-overflow-scrolling: touch;
+    overflow:scroll;
+}
+.to, .from, .subject{
+    height:7%
+}
+.scrollingBody{
+        height:90%;
+    }
+
+.inner {
+        height: calc(100% + 1px);
+    }
+.buttonRow{
+    width: 33%;
+}
+#introContainer{
+	background: url("../assets/img/passBG.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+    position:absolute;
+	z-index:5;
+}
+canvas{
+    position: absolute;
+    z-index: 1;
+	top:0;
+	left:0;
+}
+
+.play{
+    width: 75%;
+    position: absolute;
+    left: 12.5%;
+    bottom: 12%;
+    background-color: #3EFF3E;
+    box-shadow: 0px 1px 1px rgba(000,000,000,0.5), inset 1px 2px 0px rgba(255,255,255,0.4);
+    border: 1px solid #965F06;
+    border-radius: 28px;
+    height: 8%;
+    font-size: 31pt;
+	display:none;
+}
+.instructionHeader{
+    
+    
+    position: relative;
+    top: 10%;
+    color: white;
+    font-size: 6vh;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    white-space: normal;
+}
+.instruction{
+    font-size:4vh;
+    white-space:normal;
+    width:60%;
+    color:white;
+    padding-top:10%;
+    padding-bottom:10%;
+
+}
+.instructionContainer{
+    display: relative;
+    width: 100%;
+
+    
+
+}
+.header{
+    position: relative;
+    top: 5%;
+    font-size: 50pt;
+    width:100%;
+	height:20%:
+}
+center {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    
+}
+
+.back{
+    width: 70%;
+    position: absolute;
+    left: 15%;
+    bottom: 1%;
+    height: 20%;
+    background-color: #94762E;
+    box-shadow: 0px 1px 1px rgba(000,000,000,0.5), inset 1px 2px 0px rgba(255,255,255,0.4);
+    border: 1px solid #AD7B04;
+    border-radius: 28px;
+    height: 8%;
+    font-size: 24pt;
+    margin-bottom: 4%;
+    display:none;
+}

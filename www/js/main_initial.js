@@ -107,7 +107,7 @@ function checkForUpdates(){
 							mail_done = true;
                                          checkDone();
                                          }
-						if (whack_date < last_update){
+						if (whack_date < last_update || true){
 							body.innerHTML= "Downloading..."
 							writeWhackQuestionsToFile()
 							}

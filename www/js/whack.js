@@ -298,11 +298,12 @@ function endingPopup(number) {
 			var xhttp = new XMLHttpRequest();
 
 			xhttp.onreadystatechange = function () {
-
-				if (xhttp.readyState == 4 && xhttp.status == 200) {
-					window.location.href = 'main.html'
-				} else {
-					alert(xhttp.status);
+				if (xhttp.readyState == 4) {
+					if (xhttp.status == 200) {
+						window.location.href = 'main.html'
+					} else {
+						alert(xhttp.status);
+					}
 				}
 			};
 			console.log(userData);

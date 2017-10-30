@@ -773,7 +773,8 @@ function endingPopup() {
 
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
                     window.location.href = 'main.html'
-
+                } else {
+                    alert(xhttp.status);
                 }
             };
 

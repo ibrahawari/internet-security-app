@@ -757,7 +757,16 @@ function endingPopup() {
 		// Add HTTP Request
 		if (!disableClick) {
 			disableClick = true;
+
 			var xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php"
+				+ "?pid=" + userData.PID
+				+ "&program=" + userData.program
+				+ "&classyear=" + userData.classyear
+				+ "&gender=" + userData.gender
+				+ "&age=" + userData.age
+				+ "&english=" + userData.english
+				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 			xhttp.onreadystatechange = function () {
 				if (xhttp.readyState == 4) {
 					if (xhttp.status == 200) {
@@ -767,15 +776,6 @@ function endingPopup() {
 					}
 				}
 			};
-			console.log(userData);
-			xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php"
-				+ "?pid=" + userData.PID
-				+ "&program=" + userData.program
-				+ "&classyear=" + userData.classyear
-				+ "&gender=" + userData.gender
-				+ "&age=" + userData.age
-				+ "&english=" + userData.english
-				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 			xhttp.send();
 		}
 		return true;

@@ -764,22 +764,10 @@ function endingPopup() {
         event.preventDefault();
         event.stopPropagation();
 
-
         if (!disableClick) {
             disableClick = true;
+
             var xhttp = new XMLHttpRequest();
-
-			xhttp.onreadystatechange = function () {
-				if (xhttp.readyState == 4) {
-					if (xhttp.status == 200) {
-						window.location.href = 'main.html'
-					} else {
-						alert(xhttp.status);
-					}
-				}
-			};
-
-            console.log(userData);
             xhttp.open("GET", "http://cybersafegames.unc.edu/mail_results_add.php"
                 + "?pid=" + userData.PID
                 + "&program=" + userData.program
@@ -788,13 +776,20 @@ function endingPopup() {
                 + "&age=" + userData.age
                 + "&english=" + userData.english
                 + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4) {
+                    if (xhttp.status == 200) {
+                        window.location.href = 'main.html'
+                    } else {
+                        alert(xhttp.status);
+                    }
+                }
+            };
             xhttp.send();
-
         }
-
         return true;
     });
-    popup.appendChild(missedContainer)
+    popup.appendChild(missedContainer);
     // popup.appendChild(next)
     popup.appendChild(mainMenu);
     document.body.appendChild(popup)

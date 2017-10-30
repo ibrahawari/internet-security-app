@@ -295,8 +295,16 @@ function endingPopup(number) {
 
 		if (!disableClick) {
 			disableClick = true;
-			var xhttp = new XMLHttpRequest();
 
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
+				+ "?pid=" + userData.PID
+				+ "&program=" + userData.program
+				+ "&classyear=" + userData.classyear
+				+ "&gender=" + userData.gender
+				+ "&age=" + userData.age
+				+ "&english=" + userData.english
+				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
 			xhttp.onreadystatechange = function () {
 				if (xhttp.readyState == 4) {
 					if (xhttp.status == 200) {
@@ -306,21 +314,11 @@ function endingPopup(number) {
 					}
 				}
 			};
-			console.log(userData);
-			xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
-				+ "?pid=" + userData.PID
-				+ "&program=" + userData.program
-				+ "&classyear=" + userData.classyear
-				+ "&gender=" + userData.gender
-				+ "&age=" + userData.age
-				+ "&english=" + userData.english
-				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
-
 			xhttp.send();
 		}
 		return true;
 	});
-	popup.appendChild(missedContainer)
+	popup.appendChild(missedContainer);
 	// popup.appendChild(next)
 	popup.appendChild(mainMenu);
 	document.body.appendChild(popup)

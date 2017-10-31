@@ -296,25 +296,34 @@ function endingPopup(number) {
 		if (!disableClick) {
 			disableClick = true;
 
-			var xhttp = new XMLHttpRequest();
-			xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
-				+ "?pid=" + userData.PID
-				+ "&program=" + userData.program
-				+ "&classyear=" + userData.classyear
-				+ "&gender=" + userData.gender
-				+ "&age=" + userData.age
-				+ "&english=" + userData.english
-				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), false);
-			xhttp.onreadystatechange = function () {
-				if (xhttp.readyState == 4) {
-					if (xhttp.status == 200) {
-						window.location.href = 'main.html'
-					} else {
-						alert(xhttp.status);
+			chunked = chunk_results(results_arr2);
+			success = false;
+			//request loop
+			for (var i = 0; i < chunked.length; i++) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "http://cybersafegames.unc.edu/whack_results_add.php"
+					+ "?pid=" + userData.PID
+					+ "&program=" + userData.program
+					+ "&classyear=" + userData.classyear
+					+ "&gender=" + userData.gender
+					+ "&age=" + userData.age
+					+ "&english=" + userData.english
+					+ "&json_data=" + encodeURIComponent(JSON.stringify(chunked[i])), false);
+				xhttp.onreadystatechange = function () {
+					if (xhttp.readyState == 4) {
+						if (xhttp.status == 200) {
+							success = true;
+						} else {
+							success = false;
+							alert('Error');
+						}
 					}
-				}
-			};
-			xhttp.send();
+				};
+				xhttp.send();
+			}
+			if (success) {
+				window.location.href = 'main.html'				
+			}
 		}
 		return true;
 	});
@@ -322,6 +331,25 @@ function endingPopup(number) {
 	// popup.appendChild(next)
 	popup.appendChild(mainMenu);
 	document.body.appendChild(popup)
+}
+
+/**
+ * Used to split results_arr2 into an array of arrays
+ * @param {*} array the array to be chunked
+ */
+function chunk_results(array) {
+	var array_of_arrays = [];
+	// create the array of arrays
+	for (var i = 0; i < array.length; i+=10) {
+		array_of_arrays.push(array.slice(i, i + 10));
+	}
+	// set game_id = 0 in every object belonging to every array >= 1 in the array of arrays
+	for (var i = 1; i < array_of_arrays.length; i++) {
+		for (var j = 0; j < array_of_arrays[i].length; j++) {
+			array_of_arrays[i][j].game_id = 0
+		}
+	}
+	return array_of_arrays;
 }
 
 // // Resets all of the variables in the game in preparation for a new start

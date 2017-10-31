@@ -118,7 +118,7 @@ function checkForUpdates() {
 
 						} else { //If we need a new PID
 							var PID = ""
-							while (PID.length < 5) {
+							while (PID.length < 9) {
 								PID = prompt("Please enter your PID");
 							}
 							var data = {
@@ -178,10 +178,12 @@ function programDialog() {
 
 	// return program
 	var program = '';
-	while (program !== 'BSBA' && program !== 'MBA' && program !== 'MAC') {
+	while (program !== 'BSBA' && program !== 'bsba'
+		&& program !== 'MBA' && program !== 'mba'
+		&& program !== 'MAC' && program !== 'mac') {
 		program = prompt("Your Program (BSBA or MBA or MAC)")
 	}
-	return program
+	return program.toUpperCase()
 }
 
 function classyearDialog() {
@@ -212,10 +214,12 @@ function genderDialog() {
 
 	// return gender
 	var gender = 'none';
-	while (gender !== 'M' && gender !== 'F' && gender !== '') {
+	while (gender !== 'M' && gender !== 'm'
+		&& gender !== 'F' && gender !== 'f'
+		&& gender !== '') {
 		gender = prompt("Optional: gender (F or M or leave blank)");
 	}
-	return gender;
+	return gender == '' ? 'blank' : gender.toUpperCase();
 }
 
 function ageDialog() {
@@ -269,10 +273,11 @@ function englishDialog() {
 
 	// return english
 	var english = '';
-	while (english !== 'Y' && english !== 'N') {
+	while (english !== 'Y' && english !== 'y'
+		&& english !== 'N' && english !== 'n') {
 		english = prompt("Native English speaker? (Y or N)");
 	}
-	return english;
+	return english.toUpperCase();
 }
 
 

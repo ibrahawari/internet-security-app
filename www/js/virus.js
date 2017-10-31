@@ -766,7 +766,7 @@ function endingPopup() {
 				+ "&gender=" + userData.gender
 				+ "&age=" + userData.age
 				+ "&english=" + userData.english
-				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), false);
 			xhttp.onreadystatechange = function () {
 				if (xhttp.readyState == 4) {
 					if (xhttp.status == 200) {
@@ -785,34 +785,34 @@ function endingPopup() {
 	popup.appendChild(mainMenu);
 	document.body.appendChild(popup)
 }
-function restartGame() {
-	disableClick = false;
-	console.log(disableClick);
-	var oldPopup = document.getElementsByClassName("finalPopup")[0]
-	var oldDimmer = document.getElementsByClassName("dimmer")[0]
-	if (oldPopup) {
-		document.body.removeChild(oldPopup);
-		document.body.removeChild(oldDimmer);
-	}
-	virus_arr = [];
-	score_arr = [];
-	score_arr2 = [];
-	held = null;
-	greenCollected = 0;
-	redMissed = 0;
-	maxAV = 0;
-	score = 0;
-	imagesCollected = 0;
-	timeRemaining = startTime;
-	if (av_open) {
-		closeAntiVirusPopup();
-	}
-	av_counter = 0;
-	stop_game = false;
-	lastTime = Date.now();
-	results_arr2 = [];
-	main();
-}
+// function restartGame() {
+// 	disableClick = false;
+// 	console.log(disableClick);
+// 	var oldPopup = document.getElementsByClassName("finalPopup")[0]
+// 	var oldDimmer = document.getElementsByClassName("dimmer")[0]
+// 	if (oldPopup) {
+// 		document.body.removeChild(oldPopup);
+// 		document.body.removeChild(oldDimmer);
+// 	}
+// 	virus_arr = [];
+// 	score_arr = [];
+// 	score_arr2 = [];
+// 	held = null;
+// 	greenCollected = 0;
+// 	redMissed = 0;
+// 	maxAV = 0;
+// 	score = 0;
+// 	imagesCollected = 0;
+// 	timeRemaining = startTime;
+// 	if (av_open) {
+// 		closeAntiVirusPopup();
+// 	}
+// 	av_counter = 0;
+// 	stop_game = false;
+// 	lastTime = Date.now();
+// 	results_arr2 = [];
+// 	main();
+// }
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }

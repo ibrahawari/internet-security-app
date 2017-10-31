@@ -304,7 +304,7 @@ function endingPopup(number) {
 				+ "&gender=" + userData.gender
 				+ "&age=" + userData.age
 				+ "&english=" + userData.english
-				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+				+ "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), false);
 			xhttp.onreadystatechange = function () {
 				if (xhttp.readyState == 4) {
 					if (xhttp.status == 200) {
@@ -324,28 +324,28 @@ function endingPopup(number) {
 	document.body.appendChild(popup)
 }
 
-// Resets all of the variables in the game in preparation for a new start
-// Removes any popups
-function restartGame() {
-	disableClick = false;
-	console.log(disableClick);
-	var oldPopup = document.getElementsByClassName("finalPopup")[0]
-	var oldDimmer = document.getElementsByClassName("dimmer")[0]
-	if (oldPopup) {
-		document.body.removeChild(oldPopup);
-		document.body.removeChild(oldDimmer);
-	}
-	timer = 30000;
-	score = 0;
-	for (j = 0; j < 6; j++)
-		moleArr[j].mole = null
-	results_arr = [];
-	results_arr2 = [];
+// // Resets all of the variables in the game in preparation for a new start
+// // Removes any popups
+// function restartGame() {
+// 	disableClick = false;
+// 	console.log(disableClick);
+// 	var oldPopup = document.getElementsByClassName("finalPopup")[0]
+// 	var oldDimmer = document.getElementsByClassName("dimmer")[0]
+// 	if (oldPopup) {
+// 		document.body.removeChild(oldPopup);
+// 		document.body.removeChild(oldDimmer);
+// 	}
+// 	timer = 30000;
+// 	score = 0;
+// 	for (j = 0; j < 6; j++)
+// 		moleArr[j].mole = null
+// 	results_arr = [];
+// 	results_arr2 = [];
 
-	stopGame = false;
-	lastTime = Date.now()
-	main();
-}
+// 	stopGame = false;
+// 	lastTime = Date.now()
+// 	main();
+// }
 
 // Stores the location of the touch to keep track of what mole is currently being worked
 function touchStart(e) {

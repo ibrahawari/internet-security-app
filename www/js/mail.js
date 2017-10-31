@@ -775,7 +775,7 @@ function endingPopup() {
                 + "&gender=" + userData.gender
                 + "&age=" + userData.age
                 + "&english=" + userData.english
-                + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), true);
+                + "&json_data=" + encodeURIComponent(JSON.stringify(results_arr2)), false);
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4) {
                     if (xhttp.status == 200) {
@@ -795,38 +795,38 @@ function endingPopup() {
     document.body.appendChild(popup)
 }
 
-// Resets all of the variables in the game in preparation for a new start
-// Removes any popups
-function restartGame() {
-    disableClick = false;
-    console.log(disableClick);
-    var oldPopup = document.getElementsByClassName("finalPopup")[0]
-    var oldDimmer = document.getElementsByClassName("dimmer")[0]
-    if (oldPopup) {
-        document.body.removeChild(oldPopup);
-        document.body.removeChild(oldDimmer);
-    }
-    mailArr = [];
-    for (i = 0; i < 3; i++) {
-        mailArr[i] = [];
-    }
-    spriteArr = [];
-    mailCounter = 0;
-    secondsPerMail = 4;
-    results_arr = [];
-    results_arr2 = [];
-    time = (secondsPerMail - 1) * 1000;
-    if (mailOpen) {
-        var popup = document.getElementsByClassName("popup")[0];
-        popup.parentNode.removeChild(popup);
-        mailOpen = false;
-        openMail = null;
-    }
-    score = 0;
-    stop_game = false;
-    lastTime = Date.now()
-    main();
-}
+// // Resets all of the variables in the game in preparation for a new start
+// // Removes any popups
+// function restartGame() {
+//     disableClick = false;
+//     console.log(disableClick);
+//     var oldPopup = document.getElementsByClassName("finalPopup")[0]
+//     var oldDimmer = document.getElementsByClassName("dimmer")[0]
+//     if (oldPopup) {
+//         document.body.removeChild(oldPopup);
+//         document.body.removeChild(oldDimmer);
+//     }
+//     mailArr = [];
+//     for (i = 0; i < 3; i++) {
+//         mailArr[i] = [];
+//     }
+//     spriteArr = [];
+//     mailCounter = 0;
+//     secondsPerMail = 4;
+//     results_arr = [];
+//     results_arr2 = [];
+//     time = (secondsPerMail - 1) * 1000;
+//     if (mailOpen) {
+//         var popup = document.getElementsByClassName("popup")[0];
+//         popup.parentNode.removeChild(popup);
+//         mailOpen = false;
+//         openMail = null;
+//     }
+//     score = 0;
+//     stop_game = false;
+//     lastTime = Date.now()
+//     main();
+// }
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }

@@ -758,6 +758,18 @@ function endingPopup() {
 		if (!disableClick) {
 			disableClick = true;
 
+			// dummy record
+			if (results_arr2.length === 0) {
+				results_arr2.push({
+					"game_id": game_id,
+					"antivirus_update_id": antivirus_update_id,
+					"antivirus_counter": av_counter,
+					"data_chips": greenCollected,
+					"viruses_missed": redMissed,
+					"score": (16 * imagesCollected + score)
+				});
+			}
+
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("GET", "http://cybersafegames.unc.edu/virus_results_add.php"
 				+ "?pid=" + userData.PID

@@ -767,6 +767,18 @@ function endingPopup() {
         if (!disableClick) {
             disableClick = true;
 
+            // dummy record
+            if (results_arr2.length === 0) {
+                results_arr2.push({
+                    "id": -1,
+                    "selected": -1,
+                    "game_id": game_id,
+                    "score": score,
+                    "correct_answer": -1,
+                    "spam_score": spamBase
+                });                
+            }
+
 			chunked = chunk_results(results_arr2);
 			success = false;
 			//request loop

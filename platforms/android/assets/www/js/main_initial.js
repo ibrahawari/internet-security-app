@@ -24,7 +24,7 @@ var app = {
 			dir.getFile("info.json", { create: true }, function (file) {
 				update_file = file;
 				dir.getFile("whack_questions.json", { create: true }, function (file) {
-					whack_questions_file = file;
+					questions_file = file;
 					dir.getFile("mail_questions.json", { create: true }, function (file) {
 						mail_questions_file = file;
 
@@ -59,7 +59,7 @@ var app = {
 	}
 
 };
-var whack_questions_file;
+var questions_file;
 var mail_questions_file;
 var update_file;
 
@@ -118,7 +118,7 @@ function checkForUpdates() {
 
 						} else { //If we need a new PID
 							var PID = ""
-							while (PID.length < 5) {
+							while (PID.length < 9) {
 								PID = prompt("Please enter your PID");
 							}
 							var data = {
@@ -178,10 +178,12 @@ function programDialog() {
 
 	// return program
 	var program = '';
-	while (program !== 'BSBA' && program !== 'MBA' && program !== 'MAC') {
+	while (program !== 'BSBA' && program !== 'bsba'
+		&& program !== 'MBA' && program !== 'mba'
+		&& program !== 'MAC' && program !== 'mac') {
 		program = prompt("Your Program (BSBA or MBA or MAC)")
 	}
-	return program
+	return program.toUpperCase()
 }
 
 function classyearDialog() {
@@ -211,11 +213,13 @@ function genderDialog() {
 	// document.body.appendChild(dialog);	
 
 	// return gender
-	var gender = '';
-	while (gender !== 'M' && gender !== 'F') {
-		gender = prompt("Your Gender (F or M)");
+	var gender = 'none';
+	while (gender !== 'M' && gender !== 'm'
+		&& gender !== 'F' && gender !== 'f'
+		&& gender !== '') {
+		gender = prompt("Optional: gender (F or M or leave blank)");
 	}
-	return gender;
+	return gender == '' ? 'blank' : gender.toUpperCase();
 }
 
 function ageDialog() {
@@ -269,23 +273,24 @@ function englishDialog() {
 
 	// return english
 	var english = '';
-	while (english !== 'Y' && english !== 'N') {
+	while (english !== 'Y' && english !== 'y'
+		&& english !== 'N' && english !== 'n') {
 		english = prompt("Native English speaker? (Y or N)");
 	}
-	return english;
+	return english.toUpperCase();
 }
 
 
 function writeWhackQuestionsToFile() {
 	var filedata
 
-	whack_questions_file.file(function (file) {
+	questions_file.file(function (file) {
 
 		var reader = new FileReader();
 		reader.onload = function (e) {
 
 			filedata = this.result;
-			whack_questions_file.createWriter(function (fileWriter) {
+			questions_file.createWriter(function (fileWriter) {
 
 				fileWriter.truncate(0);
 
